@@ -5,13 +5,17 @@
 #include <fstream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
+#include <cmath>
 
 class CelestialBody : public sf::Drawable {
- public:
+public:
     // constructors
     CelestialBody() : position(0.0, 0.0), velocity(0.0, 0.0), mass(0.0) { }
     CelestialBody(float xpos, float ypos, float xvel,
         float yvel, float m, const std::string& texturePath);
+        
     // getters
     const sf::Texture& getTexture() const;
     sf::Vector2f getPos() const;
@@ -28,11 +32,16 @@ class CelestialBody : public sf::Drawable {
 
     bool loadTexture(const std::string& imagePath);
 
- private:
+    // part b stuff
+    sf::Vector2f getAcceleration(const std::vector<std::shared_ptr<CelestialBody>>& otherBodies, float G);
+    void setAcceleration(const sf::Vector2f& newAcceleration);
+
+private:
     sf::Texture texture;
     sf::Sprite object;
     sf::Vector2f position;
     sf::Vector2f velocity;
+    sf::Vector2f acceleration;
     float mass;
     virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 };
